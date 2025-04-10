@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Budget Report</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f3;
+            padding: 20px;
+        }
+        h1 {
+            color: #444;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+        }
+        .alert {
+            font-weight: bold;
+        }
+        .Exceeded {
+            color: red;
+        }
+        .Almost {
+            color: orange;
+        }
+        form {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        input, select {
+            margin: 5px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monthly Budget Report</h1>
+
+    <form method="POST">
+        <label>Category:</label>
+        <select name="category">
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label>Budget Amount:</label>
+        <input type="number" step="0.01" name="budget" required>
+
+        <label>Month:</label>
+        <input type="text" name="month" placeholder="e.g. 04" required>
+
+        <label>Year:</label>
+        <input type="text" name="year" placeholder="e.g. 2025" required>
+
+        <button type="submit">Set Budget</button>
+    </form>
+
+    <h2>Report for {{ month }}/{{ year }}</h2>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Spent (₹)</th>
+            <th>Budget (₹)</th>
+            <th>Status</th>
+        </tr>
+        {% for item in spending %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td class="alert {{ item[3] }}">
+                {% if item[3] == 'Exceeded' %}
+                    <span class="Exceeded">Exceeded</span>
+                {% elif item[3] == 'Almost Exhausted' %}
+                    <span class="Almost">Almost Exhausted</span>
+                {% else %}
+                    OK
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

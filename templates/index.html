@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Expense Tracker</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/">
+        <label>Category:</label>
+        <input name="category" required>
+        <label>Amount:</label>
+        <input name="amount" type="number" step="0.01" required>
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <form method="POST" action="/set-budget">
+        <label>Set Budget - Category:</label>
+        <input name="budget_category" required>
+        <label>Amount:</label>
+        <input name="budget_amount" type="number" step="0.01" required>
+        <button type="submit">Set Budget</button>
+    </form>
+
+    <h3>Monthly Report</h3>
+    <table border="1">
+        <tr>
+            <th>Category</th>
+            <th>Spent</th>
+            <th>Budget</th>
+            <th>% Used</th>
+            <th>Status</th>
+        </tr>
+        {% for cat, spent, budget, percent, alert in report %}
+        <tr >
+            <td>{{ cat }}</td>
+            <td>{{ spent }}</td>
+            <td>{{ budget }}</td>
+            <td>{{ percent if percent is not none else 'N/A' }}%</td>
+            <td>{{ 'Over Budget' if alert else 'Within Budget' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<h2>Group Expenses</h2>
+<form method="POST">
+  <input name="description" placeholder="Description" required><br>
+  <input name="amount" placeholder="Total Amount" type="number" required><br>
+  <label>Paid By:</label>
+  <select name="paid_by">
+    {% for user in users %}
+      <option value="{{ user[0] }}">{{ user[1] }}</option>
+    {% endfor %}
+  </select><br>
+  <label>Split Between:</label><br>
+  {% for user in users %}
+    <input type="checkbox" name="split_between" value="{{ user[0] }}"> {{ user[1] }}<br>
+  {% endfor %}
+  <button type="submit">Add</button>
+</form>
+
+<h3>All Group Expenses</h3>
+<ul>
+  {% for e in expenses %}
+    <li>{{ e[1] }} - ₹{{ e[2] }} (Paid by ID {{ e[3] }}) Split between IDs {{ e[4] }}</li>
+  {% endfor %}
+</ul>
